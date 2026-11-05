@@ -74,4 +74,5 @@ API 金鑰只放在 `.env`，該檔已列入 `.gitignore`，不會進入 repo �
 
 使用的工具：Claude（規劃架構、產生程式與網頁初稿）；Gemini embedding 模型（程式實際呼叫）
 用在哪裡：main.py、deploy.yml、index.html、README、範例題庫
-
+自己修改了什麼：換成真實 FAQ、自行設計測試問題與正確答案，以及實際遇到的修正
+如何驗證：事先標好正確答案再與程式結果比對、和關鍵字比對結果比較、確認 .env 不在 commit 歷史中
