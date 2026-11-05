@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>校園 FAQ 智慧查詢</title>
+<style>
+  :root {
+    --bg: #f3f6f5; --card: #ffffff; --ink: #18211f; --muted: #5f6b68;
+    --line: #dce4e1; --accent: #0f766e; --accent-soft: #e0f2ef; --chip: #edf2f0;
+    --ok: #1f7a46; --warn: #a15c00; --bad: #b3261e; --bar: #0f766e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121716; --card: #1a2120; --ink: #e5ecea; --muted: #97a5a1;
+      --line: #2a3432; --accent: #4fd1c0; --accent-soft: #173430; --chip: #222b29;
+      --ok: #6cc28f; --warn: #e2a64d; --bad: #ef6b5f; --bar: #4fd1c0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
+    line-height: 1.75; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px 64px; }
+  header { padding: 56px 0 24px; border-bottom: 3px solid var(--accent); margin-bottom: 8px; }
+  header .tag { color: var(--accent); font-weight: 700; letter-spacing: .1em; font-size: 13px; }
+  h1 { font-size: clamp(28px, 5vw, 40px); margin: 4px 0 8px; }
+  header p { color: var(--muted); margin: 0; }
+  nav { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 0 0; font-size: 14px; }
+  nav a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+  section { padding-top: 40px; }
+  h2 { font-size: 22px; margin: 0 0 12px; display: flex; align-items: baseline; gap: 10px; }
+  h2 .no { color: var(--accent); font-variant-numeric: tabular-nums; }
+  pre { background: var(--card); border: 1px solid var(--line); border-radius: 8px;
+    padding: 14px 16px; overflow-x: auto; font-size: 14px; line-height: 1.6; }
+  code { font-family: ui-monospace, "SF Mono", Consolas, monospace; }
+  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 16px 0; }
+  .flow div { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 12px; font-size: 14px; }
+  .flow b { display: block; color: var(--accent); font-size: 13px; }
+  .note { background: var(--accent-soft); border-radius: 8px; padding: 12px 16px; font-size: 15px; }
+  .meta { color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .tile { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .tile .n { font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .tile .l { color: var(--muted); font-size: 13px; }
+  .tile.main .n { color: var(--accent); }
+  .grid { display: grid; gap: 14px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px 20px; }
+  .q { display: flex; gap: 10px; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; }
+  .q h3 { margin: 0; font-size: 17px; }
+  .badge { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 2px 10px; white-space: nowrap; border: 1px solid currentColor; }
+  .b-ok { color: var(--ok); } .b-warn { color: var(--warn); } .b-bad { color: var(--bad); } .b-out { color: var(--muted); }
+  ol.m { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 8px; }
+  ol.m li { display: grid; grid-template-columns: 22px 1fr 64px; gap: 8px; align-items: center; font-size: 14px; }
+  ol.m .r { color: var(--muted); font-variant-numeric: tabular-nums; }
+  ol.m .t { min-width: 0; }
+  ol.m .t small { color: var(--muted); margin-right: 6px; }
+  ol.m .track { height: 4px; background: var(--chip); border-radius: 2px; margin-top: 3px; }
+  ol.m .fill { height: 4px; background: var(--bar); border-radius: 2px; opacity: .45; }
+  ol.m li.exp .fill { opacity: 1; }
+  ol.m li.exp .t { font-weight: 700; }
+  ol.m .s { text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+  .kw { margin-top: 10px; font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; }
+  details { margin-top: 8px; font-size: 14px; }
+  details summary { cursor: pointer; color: var(--muted); }
+  .faq { display: grid; gap: 8px; margin-top: 10px; }
+  .faq div { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+  .faq small { color: var(--accent); font-weight: 700; margin-right: 6px; }
+  table { width: 100%; border-collapse: collapse; background: var(--card); font-size: 15px; }
+  th, td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; }
+  th { background: var(--chip); white-space: nowrap; }
+  .empty { padding: 20px; border: 1px dashed var(--line); border-radius: 8px; color: var(--muted); }
+  footer { margin-top: 56px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="tag">PYTHON × EMBEDDING × GITHUB ACTIONS</div>
+    <h1>校園 FAQ 智慧查詢</h1>
+    <p>用自己的話提問，由 Gemini embedding 比對「意思」，從題庫中找出最相關的 3 題常見問答。</p>
+    <nav>
+      <a href="#what">01 做了什麼</a><a href="#how">02 怎麼執行</a>
+      <a href="#result">03 執行結果</a><a href="#ai">04 AI 使用說明</a>
+    </nav>
+  </header>
+
+  <section id="what">
+    <h2><span class="no">01</span>做了什麼</h2>
+    <p>學生找校園資訊時，常常不知道正式名稱怎麼講：想問「書可以延長嗎」，FAQ 上寫的卻是「續借」；想問「課不想上了」，正式說法是「停修」。單純比對關鍵字容易找不到。</p>
+    <p>這支 Python 程式使用 <b>Embedding（文字向量）</b>：呼叫 Gemini 把每一題 FAQ 和使用者的問題都轉成一串數字（向量），意思越接近的句子，向量方向也越接近。再用 <b>餘弦相似度</b> 排序，列出最相關的前 3 題。為了證明效果，另外做了一個不使用 AI 的「關鍵字比對」當對照組。</p>
+    <div class="flow">
+      <div><b>① 題庫</b>data/faq.json<br>20 題常見問答</div>
+      <div><b>② 轉成向量</b>Gemini embedding<br>題庫與問題各轉一次</div>
+      <div><b>③ 比對</b>餘弦相似度<br>取分數最高的 3 題</div>
+      <div><b>④ 評估與發布</b>算正確率 → results.json<br>Actions 部署到 Pages</div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2><span class="no">02</span>怎麼執行</h2>
+    <pre><code># 1. 安裝套件（使用 uv）
+uv sync
+
+# 2. 設定金鑰：複製範例檔後填入自己的 Gemini API key
+cp .env.example .env
+
+# 3. 跑完整評估，結果會寫入 site/results.json
+uv run main.py
+
+# （可選）現場問一題
+uv run main.py --ask "宿舍可以煮泡麵嗎"
+
+# 4. commit 並 push，GitHub Actions 會自動部署本頁
+git add -A &amp;&amp; git commit -m "更新查詢結果" &amp;&amp; git push</code></pre>
+    <p>金鑰只存在 <code>.env</code>，已列入 <code>.gitignore</code>，不會上傳到 GitHub。GitHub Actions 只負責部署網頁，不呼叫 AI，所以不需要金鑰。</p>
+  </section>
+
+  <section id="result">
+    <h2><span class="no">03</span>執行結果</h2>
+    <div id="results"><div class="empty">載入中…</div></div>
+  </section>
+
+  <section id="ai">
+    <h2><span class="no">04</span>AI 使用說明</h2>
+    <table>
+      <tr><th>使用的工具</th><td>【請填寫】例：Claude（規劃架構、產生程式碼初稿與網頁）、Gemini embedding 模型（程式中實際呼叫，把文字轉成向量）</td></tr>
+      <tr><th>用在哪裡</th><td>【請填寫】例：main.py 初稿、GitHub Actions workflow、作品頁版型、範例題庫</td></tr>
+      <tr><th>自己修改了什麼</th><td>【請填寫】例：把範例題庫換成學校網站上的真實 FAQ、自己設計測試問題與正確答案</td></tr>
+      <tr><th>如何驗證</th><td>【請填寫】例：每個測試問題都先自己標好正確答案，再和程式結果比對；觀察題庫外問題的相似度是否明顯較低</td></tr>
+    </table>
+  </section>
+
+  <footer>Tunghai University · 課程作業</footer>
+</div>
+
+<script>
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct = x => (x == null ? "—" : Math.round(x * 100) + "%");
+
+function badge(it) {
+  if (!it.expected_id) return '<span class="badge b-out">題庫外問題</span>';
+  if (it.hit_rank === 1) return '<span class="badge b-ok">✓ 第 1 名命中</span>';
+  if (it.hit_rank) return `<span class="badge b-warn">第 ${it.hit_rank} 名命中</span>`;
+  return '<span class="badge b-bad">✗ 前 3 名未命中</span>';
+}
+
+fetch("results.json", { cache: "no-store" })
+  .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+  .then(data => {
+    const m = data.metrics || {};
+    const items = data.items || [];
+    const cards = items.map(it => `
+      <article class="card">
+        <div class="q"><h3>「${esc(it.query)}」</h3>${badge(it)}</div>
+        <ol class="m">${(it.matches || []).map((x, i) => `
+          <li class="${x.id === it.expected_id ? "exp" : ""}">
+            <span class="r">${i + 1}</span>
+            <div class="t"><small>${esc(x.id)}・${esc(x.category)}</small>${esc(x.question)}
+              <div class="track"><div class="fill" style="width:${Math.max(0, Math.min(1, x.score)) * 100}%"></div></div></div>
+            <span class="s">${Number(x.score).toFixed(3)}</span>
+          </li>`).join("")}
+        </ol>
+        <div class="kw">對照組（關鍵字比對）第 1 名：${esc(it.keyword_top1?.id)} ${esc(it.keyword_top1?.question)}
+          ${it.expected_id ? (it.keyword_correct ? "　✓ 正確" : "　✗ 錯誤") : ""}</div>
+        <details><summary>查看第 1 名的答案</summary><p style="margin:6px 0 0">${esc(it.matches?.[0]?.answer)}</p></details>
+      </article>`).join("");
+
+    document.getElementById("results").innerHTML = `
+      <div class="meta">模型：${esc(data.model)}｜向量維度：${esc(data.dimension)}｜產生時間：${esc(data.generated_at)}｜題庫 ${esc(data.faq_count)} 題、測試問題 ${esc(data.query_count)} 題（有標準答案 ${esc(m.labeled)} 題）</div>
+      <div class="tiles">
+        <div class="tile main"><div class="n">${pct(m.top1_accuracy)}</div><div class="l">語意搜尋 Top-1 正確率</div></div>
+        <div class="tile main"><div class="n">${pct(m.top3_hit_rate)}</div><div class="l">語意搜尋 Top-3 命中率</div></div>
+        <div class="tile"><div class="n">${pct(m.keyword_top1_accuracy)}</div><div class="l">關鍵字比對 Top-1 正確率（對照組）</div></div>
+        <div class="tile"><div class="n">${m.avg_top1_score_in_scope ?? "—"} / ${m.avg_top1_score_out_of_scope ?? "—"}</div><div class="l">第 1 名平均相似度：題庫內 / 題庫外問題</div></div>
+      </div>
+      <p class="note">粗體並加深的那一列是事先標好的正確答案。題庫外問題（例如問拉麵店）本來就沒有答案，用來觀察相似度是否明顯偏低。</p>
+      <div class="grid">${cards}</div>
+      <details><summary>查看完整題庫（${esc(data.faq_count)} 題）</summary>
+        <div class="faq">${(data.faq || []).map(f => `<div><small>${esc(f.id)}・${esc(f.category)}</small><b>${esc(f.question)}</b><br>${esc(f.answer)}</div>`).join("")}</div>
+      </details>`;
+  })
+  .catch(() => {
+    document.getElementById("results").innerHTML =
+      '<div class="empty">尚未產生結果。請先執行 <code>uv run main.py</code> 並將 site/results.json commit 上傳。</div>';
+  });
+</script>
+</body>
+</html>

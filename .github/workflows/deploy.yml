@@ -1,0 +1,44 @@
+name: Deploy GitHub Pages
+
+# push 到 main 時自動部署，也可在 Actions 頁面手動執行
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 取得程式碼
+        uses: actions/checkout@v4
+
+      - name: 檢查結果檔是否存在
+        run: |
+          if [ ! -f site/results.json ]; then
+            echo "::warning::找不到 site/results.json，請先在 Codespace 執行 uv run main.py 並 commit"
+          fi
+
+      - name: 設定 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上傳網站檔案
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

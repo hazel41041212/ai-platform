@@ -1,0 +1,10 @@
+[project]
+name = "campus-faq-search"
+version = "0.1.0"
+description = "用 Gemini embedding 做校園 FAQ 語意搜尋，並以 GitHub Pages 發布作品頁"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "google-genai>=1.0.0",
+    "python-dotenv>=1.0",
+]

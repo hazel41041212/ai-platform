@@ -1,0 +1,19 @@
+[
+  {"query": "我想把一門課退掉，要去哪裡處理？", "expected_id": "F01"},
+  {"query": "想修的課已經滿了，還有機會進去嗎", "expected_id": "F02"},
+  {"query": "期中考考很爛，可以中途放棄這門課嗎", "expected_id": "F03"},
+  {"query": "修別的科系開的課算不算畢業學分", "expected_id": "F04"},
+  {"query": "在房間用電鍋煮泡麵會被罰嗎", "expected_id": "F06"},
+  {"query": "暑假不想回家，可以繼續住學校嗎", "expected_id": "F08"},
+  {"query": "書快到期了，可以延長嗎", "expected_id": "F09"},
+  {"query": "在家要怎麼下載學校買的期刊論文", "expected_id": "F10"},
+  {"query": "小組報告想找一間安靜的房間討論", "expected_id": "F11"},
+  {"query": "家裡經濟有困難，學費繳不出來", "expected_id": "F13"},
+  {"query": "碩士生能不能當助教賺點錢", "expected_id": "F14"},
+  {"query": "感冒發燒，今天沒辦法去上課", "expected_id": "F15"},
+  {"query": "我想暫停學業去工作一年", "expected_id": "F16"},
+  {"query": "覺得期末分數算錯了", "expected_id": "F17"},
+  {"query": "筆電在教室連不上網", "expected_id": "F20"},
+  {"query": "學校附近有什麼好吃的拉麵？", "expected_id": null},
+  {"query": "畢業典禮要穿什麼？", "expected_id": null}
+]
