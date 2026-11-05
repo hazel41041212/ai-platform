@@ -72,4 +72,4 @@ API 金鑰只放在 `.env`，該檔已列入 `.gitignore`，不會進入 repo �
 
 ## AI 使用說明
 
-
+使用的工具：Claude（規劃架構、產生程式與網頁初稿）；Gemini embedding 模型（程式實際呼叫）
